@@ -1,0 +1,31 @@
+{
+	"fromTime": "2022-05-04T00:00:00.000Z",
+	"toTime": "2022-05-04T23:59:59.000Z",
+	"queues": ["Бизнес гарант вх"],
+	"columns": [
+		"CallTime=dt(inbound_callstates.t)",
+		"Address=prop(inbound_callstates,address)",
+		"AgentId=str(inbound_callstates.agentid)",
+		"QueueId=str(inbound_callstates.queueid)",
+		"RequestId=prop(inbound_callstates,requestid)",
+		"CallsTotal=count(inbound_callstates.id)",
+		"Answered=checkEvent(inbound_callstates.events,Connected with Agent)",
+		"TalkTime=fromToDuration(inbound_callstates.events,Connected with Agent,Disconnected from Agent;Disconnected;Left Queue;Ended)",
+		"WaitTime=fromToDuration(inbound_callstates.events,Waiting,Connected with Agent;Stop Waiting;Left Queue;Disconnected;Ended;CS_BREAK)",
+		"DroppedBySubscriber=checkEvent(inbound_callstates.events,Disconnected Alone)",
+		"DroppedByAgent=checkEvent(inbound_callstates.events,Disconnected by Internal)",
+		"DroppedBySystem=checkEvent(inbound_callstates.events,Disconnected by System)"
+	],
+	"from": ["inbound_callstates"],
+	"orderBy": ["CallTime"],
+	"showColumns": ["RequestId", "CallTime", "Address", "CallsTotal", "Answered", "TalkTime"],
+	"translations": {
+		"columnLabels": {
+			"CallTime": "Время",
+			"Address": "Телефон",
+			"CallsTotal": "Звонки",
+			"Answered": "Отвеченные",
+			"TalkTime": "Продолжительность"
+		}
+	}
+}
